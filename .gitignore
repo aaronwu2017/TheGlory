@@ -13,8 +13,3 @@
 __pycache__/
 *.py[cod]
 
-# Ignore large data files (Recommended: prevents repo bloat)
-# If you specifically want to track some small CSVs, you can remove *.csv
-*.zip
-*.csv
-*.xlsx
