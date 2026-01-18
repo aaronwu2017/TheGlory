@@ -12,7 +12,7 @@ This timeline visualization shows the Bitcoin price movement on October 10, 2025
 - **IBIT Price** (dotted orange line): iShares Bitcoin Trust ETF price
 - **Book Depth Anomaly** (red bars): Binance book depth anomaly indicator
 - **Key Events**: 
-  - Trump Post about Tariff
+  - [Trump Post about Tariff](https://truthsocial.com/@realDonaldTrump/115351840469973590)
   - Binance Crypto Withdrawals Halted
   - SPY Intraday Low
   - Binance Widespread System Overload Error
