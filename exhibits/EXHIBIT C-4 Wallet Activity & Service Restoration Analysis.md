@@ -19,12 +19,12 @@ The cryptocurrency withdrawal halt was caused by Binance's internal technical fa
 
 ### 2. Ethereum Network (ETH): High Fees, But Fully Functional
 
-**Baseline (Block #23549966)**: [Etherscan Link](https://etherscan.io/block/23549966)
+**During Crash (Block #23549966)**: [Etherscan Link](https://etherscan.io/block/23549966)
 - Gas fees elevated above typical levels but within acceptable operational range
 - Network continued processing transactions normally
 
 **Post-Crash (Block #23549999)**: [Etherscan Link](https://etherscan.io/block/23549999)
-- Gas fees spiked to 400 Gwei during the incident
+- Gas fees spiked to 400 Gwei
 - Blockchain continued processing transactions normally. Similar fee levels occurred during market peaks in 2021-2022
 
 ---
