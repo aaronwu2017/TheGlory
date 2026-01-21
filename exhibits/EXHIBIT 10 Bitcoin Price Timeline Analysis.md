@@ -1,8 +1,8 @@
-# Bitcoin Price Timeline Analysis
+# EXHIBIT 10: Bitcoin Price Timeline Analysis
 
 ## 2025-10-10 Timeline
 
-![Bitcoin Price Timeline - 2025-10-10](Bitcoin_Price_Timeline_2025-10-10.png)
+![Bitcoin Price Timeline - 2025-10-10](../analysis/timeline/Bitcoin_Price_Timeline_2025-10-10.png)
 
 ### Key Events on 2025-10-10
 
