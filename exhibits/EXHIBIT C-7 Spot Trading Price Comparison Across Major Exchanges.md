@@ -1,16 +1,6 @@
-# Spot Trading Data Analysis
+# EXHIBIT C-7: Spot Trading Price Comparison Across Major Exchanges
 
 Compare spot trading prices across major exchanges (Binance, Coinbase, Gemini) during the October 10, 2025 incident.
-
-## Files
-
-- `compare_all_exchanges.py` - Compare prices across all coins and exchanges
-- Individual coin folders with download scripts:
-  - `BTC/download_spot_data.py`
-  - `DOGE/download_doge_data.py`
-  - `AAVE/download_aave_data.py`
-  - `SOL/download_sol_data.py`
-  - `POL/download_pol_data.py`
 
 ## Coins Analyzed
 
@@ -25,15 +15,6 @@ Compare spot trading prices across major exchanges (Binance, Coinbase, Gemini) d
 - **Binance** - Baseline reference
 - **Coinbase** - US-regulated exchange
 - **Gemini** - US-regulated exchange
-
-## Usage
-
-Run the comparison script to analyze all coins:
-
-```bash
-cd analysis/spot
-python compare_all_exchanges.py
-```
 
 ## Results (2025-10-10)
 
@@ -72,8 +53,9 @@ POL:
 - **AAVE**: High variance (61-124% higher on US exchanges)
 - **POL**: Moderate to high variance (30-74% higher on US exchanges)
 
-## Requirements
+## Source Data
 
-- `tardis-dev`
-- `pandas`
-- Valid Tardis API key (configured in scripts)
+Analysis scripts and raw data files available in: `analysis/spot/`
+
+- `compare_all_exchanges.py` - Main comparison script
+- Individual coin folders with download scripts and CSV data
