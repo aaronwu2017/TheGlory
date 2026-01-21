@@ -1,4 +1,4 @@
-# EXHIBIT 10: Bitcoin Price Timeline Analysis
+# EXHIBIT C-10: Bitcoin Price Timeline Analysis
 
 ## 2025-10-10 Timeline
 
