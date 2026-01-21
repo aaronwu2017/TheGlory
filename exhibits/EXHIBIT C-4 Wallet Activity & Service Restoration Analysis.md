@@ -85,6 +85,25 @@ The halt in Binance's cryptocurrency withdrawal services was **not** due to bloc
 
 ## Institutional Market Maker Context
 
-Wintermute is recognized as a dominant global market maker and, upon information and belief, is responsible for maintaining liquidity for digital assets including SUI, ATOM, and BTC.
 
+
+
+
+
+## 5. Institutional Market Maker Context
+
+**Wintermute** is recognized as a dominant global market maker and, based on information and belief, is responsible for maintaining liquidity for digital assets including SUI, ATOM, and BTC on the Respondent's platform.
+
+### Evidence of Infrastructure Failure Preventing Liquidity Provision
 On-chain evidence (see: [transaction](https://intel.arkm.com/explorer/tx/e44c8dad4b2a8a68c5eaaf6ec5e5662c8b3e9b2a8d1ffdc45e6ad13c4408b35f)) confirms that Wintermute successfully executed a withdrawal of 203.10938323 BTC immediately following service recovery. This substantial capital movement demonstrates that the market maker remained operationally responsive. Consequently, the complete lack of liquidity for BTC, SUI, ATOM, and other digital assets during the outage cannot be attributed to a failure by the market maker to discharge its bilateral quoting obligations, but rather points to a platform-side failure by Binance that prevented willing market makers from accessing the order book.
+
+Evgeny Gaevoy, CEO of Wintermute, publicly confirmed that the lack of market depth during the crash was a direct result of exchange infrastructure failure (inability to move inventory), not market maker discretion.
+
+> "Generally, what happens when the market crashes is things just stop working everywhere. Especially as a market maker, basically what you end up doing is... let's say you buy on Binance, sell on Coinbase. You end up having pretty big stablecoin inventory on Coinbase, you end up having all kinds of tokens on Binance, but you cannot move them over because for both of them, basically all the withdrawals will be completely flooded. It will be impossible to move things over.
+>
+> So when people are saying 'market makers went out of the market because they were scared of the conditions or didn't want to provide liquidity,' most of the time we simply couldn't. Because **we couldn't [show] bids in one place, we couldn't show offers in the other place because we just couldn't move inventory around.**"
+
+* **Source:** *Wintermute CEO breaks down crypto's record breaking $20B+ liquidation event* (Interview with The Block)
+* **Timestamp:** [04:52 - 05:35](https://youtu.be/LPQGl6Ju16U?t=292)
+
+**Conclusion:** The complete lack of liquidity for BTC, SUI, ATOM, and other digital assets during the outage cannot be attributed to a failure by the market maker to discharge its bilateral quoting obligations. Rather, the evidence points to a **platform-side failure by the Respondent** that prevented willing and able market makers from accessing the order book and managing inventory.
