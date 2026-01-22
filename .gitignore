@@ -13,3 +13,10 @@
 __pycache__/
 *.py[cod]
 
+# Ignore macOS metadata
+__MACOSX/
+.DS_Store
+
+# Ignore large local datasets
+/analysis/liquidity-orderbook-viewer/datasets/
+
