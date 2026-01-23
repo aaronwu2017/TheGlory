@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tardis Crypto Data Viewer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Tardis Crypto Data Viewer</h1>
+        
+        <div class="controls">
+            <div class="form-group">
+                <label>Exchange:</label>
+                <select id="exchange">
+                    <option value="bitmex">BitMEX</option>
+                    <option value="binance">Binance</option>
+                    <option value="coinbase">Coinbase</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>From Date:</label>
+                <input type="datetime-local" id="fromDate" value="2024-12-01T00:00">
+            </div>
+            
+            <div class="form-group">
+                <label>To Date:</label>
+                <input type="datetime-local" id="toDate" value="2024-12-01T00:10">
+            </div>
+            
+            <div class="form-group">
+                <label>Symbols (comma-separated):</label>
+                <input type="text" id="symbols" value="XBTUSD" placeholder="XBTUSD,ETHUSD">
+            </div>
+            
+            <div class="form-group">
+                <label>Limit:</label>
+                <input type="number" id="limit" value="50" min="1" max="1000">
+            </div>
+            
+            <button id="fetchBtn" onclick="fetchData()">Fetch Data</button>
+        </div>
+        
+        <div id="status" class="status"></div>
+        
+        <div id="results" class="results"></div>
+    </div>
+    
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

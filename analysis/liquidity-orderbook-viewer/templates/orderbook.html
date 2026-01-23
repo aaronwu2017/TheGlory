@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Book Viewer</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #0e0e0e;
+            color: #fff;
+        }
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+        }
+        .info {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 14px;
+            color: #888;
+        }
+        .controls {
+            text-align: center;
+            margin: 20px 0;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 5px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        button:disabled {
+            background: #666;
+            cursor: not-allowed;
+        }
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .tab {
+            padding: 10px 30px;
+            background: #2a2a2a;
+            border: 2px solid #444;
+            border-radius: 8px;
+            cursor: pointer;
+            color: #888;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        .tab:hover {
+            background: #333;
+        }
+        .tab.active {
+            background: #4CAF50;
+            color: #fff;
+            border-color: #4CAF50;
+        }
+        .chart-container {
+            position: relative;
+            height: 500px;
+            margin: 20px 0;
+        }
+        .orderbook-table {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .side {
+            background: #1a1a1a;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        .side h3 {
+            margin-top: 0;
+            text-align: center;
+        }
+        .bids h3 { color: #26a69a; }
+        .asks h3 { color: #ef5350; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px;
+            text-align: right;
+        }
+        th {
+            background: #2a2a2a;
+            font-weight: bold;
+        }
+        .bids td { color: #26a69a; }
+        .asks td { color: #ef5350; }
+        tr:hover {
+            background: #2a2a2a;
+        }
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        .loading-overlay.show {
+            display: flex;
+        }
+        .loading-spinner {
+            border: 4px solid #444;
+            border-top: 4px solid #4CAF50;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .error-message {
+            background: #ef5350;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            display: none;
+        }
+        .error-message.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+    </div>
+    
+    <h1>📊 Order Book Viewer</h1>
+    
+    <div class="error-message" id="errorMessage"></div>
+    
+    <div class="controls" style="margin-bottom: 20px;">
+        <label for="stablecoin" style="color: #888; margin-right: 10px;">Stablecoin:</label>
+        <select id="stablecoin" onchange="updateExchangeTabs()" style="padding: 8px; border-radius: 4px; border: 1px solid #444; background: #1a1a1a; color: #fff; font-size: 16px;">
+            <option value="usdt">USDT</option>
+            <option value="usdc">USDC</option>
+        </select>
+    </div>
+    
+    <div class="info" style="font-size: 12px; color: #666; margin-bottom: 10px;">
+        Note: Coinbase and Hyperliquid do not specify whether their perpetuals are USDT or USDC based
+    </div>
+    
+    <div class="tabs" id="exchangeTabs">
+        <div class="tab active" data-exchange="binance" onclick="switchExchange('binance-usdt')">Binance</div>
+        <div class="tab" data-exchange="okx" onclick="switchExchange('okx-usdt')">OKX</div>
+        <div class="tab" data-exchange="huobi" onclick="switchExchange('huobi-usdt')">Huobi</div>
+        <div class="tab" data-exchange="bybit" onclick="switchExchange('bybit-usdt')">Bybit</div>
+        <div class="tab" data-exchange="kucoin" onclick="switchExchange('kucoin-usdt')">KuCoin</div>
+        <div class="tab" data-exchange="hyperliquid" onclick="switchExchange('hyperliquid')">Hyperliquid</div>
+        <div class="tab" data-exchange="bitget" onclick="switchExchange('bitget-usdt')">Bitget</div>
+        <div class="tab" data-exchange="coinbase" onclick="switchExchange('coinbase-usdt')">Coinbase</div>
+    </div>
+    
+    <div class="info">
+        <div id="symbol">Symbol: Loading...</div>
+        <div id="row-info">Row: 0</div>
+        <div id="actual-timestamp">Actual Timestamp: --</div>
+        <div style="margin-top: 10px; padding: 10px; background: #1a1a1a; border-radius: 8px;">
+            <div style="font-weight: bold; margin-bottom: 5px; color: #4CAF50;">Liquidity Metrics (Oct 9 Baseline)</div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; font-size: 13px;">
+                <div>
+                    <span style="color: #26a69a;">Bid:</span> 
+                    <span id="bid-liquidity">--</span>
+                    <div style="font-size: 11px; color: #666;">Baseline: <span id="bid-baseline">--</span></div>
+                </div>
+                <div>
+                    <span style="color: #ef5350;">Ask:</span> 
+                    <span id="ask-liquidity">--</span>
+                    <div style="font-size: 11px; color: #666;">Baseline: <span id="ask-baseline">--</span></div>
+                </div>
+                <div>
+                    <span style="color: #888;">Total:</span> 
+                    <span id="total-liquidity">--</span>
+                    <div style="font-size: 11px; color: #666;">Baseline: <span id="total-baseline">--</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="controls">
+        <button onclick="previousSnapshot()" id="prevBtn">⬅️ Previous</button>
+        <button onclick="nextSnapshot()" id="nextBtn">Next ➡️</button>
+        <button onclick="jumpBackMinute()" style="background: #FF9800;">⏪ -1 Min</button>
+        <button onclick="jumpForwardMinute()" style="background: #FF9800;">+1 Min ⏩</button>
+        <div style="margin-top: 15px; display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap;">
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <input type="text" id="timestampInput" placeholder="Unix timestamp (microseconds)" style="padding: 8px; width: 220px; border-radius: 4px; border: 1px solid #444; background: #1a1a1a; color: #fff;">
+                <button onclick="jumpToTimestamp()">Jump</button>
+            </div>
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <span style="color: #888;">or</span>
+                <input type="datetime-local" id="utcInput" step="1" style="padding: 8px; border-radius: 4px; border: 1px solid #444; background: #1a1a1a; color: #fff;">
+                <button onclick="jumpToUTCTime()">Jump to UTC</button>
+                <div id="estDisplay" style="padding: 8px; background: #2a2a2a; border-radius: 4px; color: #4CAF50; min-width: 180px;">EST: --</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="chart-container">
+        <canvas id="orderbookChart"></canvas>
+    </div>
+    
+    <div class="orderbook-table">
+        <div class="side bids">
+            <h3>BIDS (Buy Orders)</h3>
+            <table id="bidsTable">
+                <thead>
+                    <tr>
+                        <th>Price</th>
+                        <th>Amount</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        
+        <div class="side asks">
+            <h3>ASKS (Sell Orders)</h3>
+            <table id="asksTable">
+                <thead>
+                    <tr>
+                        <th>Price</th>
+                        <th>Amount</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        let currentRow = 0;
+        let chart = null;
+        let currentExchange = 'binance-usdt';
+        
+        function showLoading() {
+            document.getElementById('loadingOverlay').classList.add('show');
+        }
+        
+        function hideLoading() {
+            document.getElementById('loadingOverlay').classList.remove('show');
+        }
+        
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.classList.add('show');
+            setTimeout(() => {
+                errorDiv.classList.remove('show');
+            }, 5000);
+        }
+        
+        function hideError() {
+            document.getElementById('errorMessage').classList.remove('show');
+        }
+        
+        function initChart() {
+            const ctx = document.getElementById('orderbookChart').getContext('2d');
+            chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Bids',
+                        data: [],
+                        backgroundColor: 'rgba(38, 166, 154, 0.6)',
+                        borderColor: 'rgba(38, 166, 154, 1)',
+                        borderWidth: 1
+                    }, {
+                        label: 'Asks',
+                        data: [],
+                        backgroundColor: 'rgba(239, 83, 80, 0.6)',
+                        borderColor: 'rgba(239, 83, 80, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            stacked: false,
+                            grid: { color: '#333' },
+                            ticks: { color: '#888' }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            min: 0,
+                            max: 20,
+                            grid: { color: '#333' },
+                            ticks: { color: '#888' }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: { color: '#fff' }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function updateChart(bids, asks) {
+            const bidPrices = bids.map(b => b.price.toFixed(1));
+            const bidAmounts = bids.map(b => b.amount);
+            const askPrices = asks.map(a => a.price.toFixed(1));
+            const askAmounts = asks.map(a => a.amount);
+            
+            chart.data.labels = [...bidPrices.reverse(), ...askPrices];
+            chart.data.datasets[0].data = [...bidAmounts.reverse(), ...Array(asks.length).fill(0)];
+            chart.data.datasets[1].data = [...Array(bids.length).fill(0), ...askAmounts];
+            chart.update();
+        }
+        
+        function updateTable(tableId, data) {
+            const tbody = document.querySelector(`#${tableId} tbody`);
+            tbody.innerHTML = '';
+            
+            let cumulative = 0;
+            data.forEach(item => {
+                cumulative += item.amount;
+                const row = tbody.insertRow();
+                row.insertCell(0).textContent = item.price.toFixed(1);
+                row.insertCell(1).textContent = item.amount.toFixed(3);
+                row.insertCell(2).textContent = cumulative.toFixed(3);
+            });
+        }
+        
+        function updateExchangeTabs() {
+            const stablecoin = document.getElementById('stablecoin').value;
+            const tabs = document.querySelectorAll('.tab');
+            
+            tabs.forEach(tab => {
+                const exchange = tab.getAttribute('data-exchange');
+                const onclick = tab.getAttribute('onclick');
+                
+                if (exchange === 'hyperliquid') {
+                    // Hyperliquid doesn't have USDT/USDC variants
+                    tab.style.display = stablecoin === 'usdt' ? 'block' : 'none';
+                } else if (exchange === 'huobi') {
+                    // Huobi only has USDT
+                    tab.style.display = stablecoin === 'usdt' ? 'block' : 'none';
+                } else if (exchange === 'bybit') {
+                    // Bybit only has USDT (BTCPERP)
+                    tab.style.display = stablecoin === 'usdt' ? 'block' : 'none';
+                } else if (exchange === 'kucoin' && stablecoin === 'usdt') {
+                    // KuCoin USDT is excluded (too large)
+                    tab.style.display = 'none';
+                } else if (exchange === 'coinbase') {
+                    // Coinbase only has USDT
+                    tab.style.display = stablecoin === 'usdt' ? 'block' : 'none';
+                } else if (exchange === 'bitget') {
+                    // Bitget only has USDT
+                    tab.style.display = stablecoin === 'usdt' ? 'block' : 'none';
+                } else {
+                    // Update onclick to use correct stablecoin
+                    const baseExchange = exchange;
+                    tab.setAttribute('onclick', `switchExchange('${baseExchange}-${stablecoin}')`);
+                }
+            });
+            
+            // Switch to the first visible tab if current is hidden
+            const activeTab = document.querySelector('.tab.active');
+            if (activeTab && activeTab.style.display === 'none') {
+                const firstVisible = document.querySelector('.tab[style="display: block"], .tab:not([style*="display: none"])');
+                if (firstVisible) {
+                    firstVisible.click();
+                }
+            } else if (activeTab) {
+                // Reload current exchange with new stablecoin
+                const exchange = activeTab.getAttribute('data-exchange');
+                if (exchange !== 'hyperliquid' && exchange !== 'huobi') {
+                    switchExchange(`${exchange}-${stablecoin}`);
+                }
+            }
+        }
+        
+        async function switchExchange(exchange) {
+            currentExchange = exchange;
+            
+            // Update tab styling
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Check if this exchange only supports USDT
+            const usdtOnlyExchanges = ['huobi', 'bybit', 'hyperliquid', 'coinbase', 'bitget'];
+            const exchangeBase = event.target.getAttribute('data-exchange');
+            
+            const stablecoinSelect = document.getElementById('stablecoin');
+            const usdcOption = stablecoinSelect.querySelector('option[value="usdc"]');
+            
+            if (usdtOnlyExchanges.includes(exchangeBase)) {
+                // Force USDT selection and disable USDC option
+                stablecoinSelect.value = 'usdt';
+                usdcOption.disabled = true;
+                usdcOption.style.display = 'none';
+            } else {
+                // Enable USDC option for exchanges that support it
+                usdcOption.disabled = false;
+                usdcOption.style.display = 'block';
+            }
+            
+            // Don't call updateExchangeTabs() here to avoid loops
+            
+            // Keep the same timestamp when switching exchanges
+            const currentTimestamp = parseInt(document.getElementById('timestampInput').value);
+            if (currentTimestamp) {
+                await jumpToTimestamp();
+            } else {
+                loadData(0);
+            }
+        }
+        
+        async function loadData(row) {
+            showLoading();
+            hideError();
+            try {
+                const response = await fetch(`/api/data?start=${row}&exchange=${currentExchange}`);
+                const data = await response.json();
+                
+                if (data.error) {
+                    showError(data.error);
+                    return;
+                }
+                
+                document.getElementById('symbol').textContent = `Symbol: ${data.symbol}`;
+                document.getElementById('row-info').textContent = `Row: ${data.current_row}`;
+                document.getElementById('actual-timestamp').textContent = `Actual Timestamp: ${data.timestamp}`;
+                
+                // Update liquidity metrics
+                const formatLiquidity = (val) => {
+                    if (val >= 1000000) return `$${(val / 1000000).toFixed(2)}M`;
+                    if (val >= 1000) return `$${(val / 1000).toFixed(0)}K`;
+                    return `$${val.toFixed(0)}`;
+                };
+                
+                document.getElementById('bid-liquidity').textContent = formatLiquidity(data.current_liquidity.bid);
+                document.getElementById('ask-liquidity').textContent = formatLiquidity(data.current_liquidity.ask);
+                document.getElementById('total-liquidity').textContent = formatLiquidity(data.current_liquidity.total);
+                
+                document.getElementById('bid-baseline').textContent = formatLiquidity(data.baseline_liquidity.bid);
+                document.getElementById('ask-baseline').textContent = formatLiquidity(data.baseline_liquidity.ask);
+                document.getElementById('total-baseline').textContent = formatLiquidity(data.baseline_liquidity.total);
+                
+                // Color code based on comparison to baseline
+                const bidChange = ((data.current_liquidity.bid - data.baseline_liquidity.bid) / data.baseline_liquidity.bid * 100);
+                const askChange = ((data.current_liquidity.ask - data.baseline_liquidity.ask) / data.baseline_liquidity.ask * 100);
+                const totalChange = ((data.current_liquidity.total - data.baseline_liquidity.total) / data.baseline_liquidity.total * 100);
+                
+                document.getElementById('bid-liquidity').style.color = bidChange >= 0 ? '#26a69a' : '#ef5350';
+                document.getElementById('ask-liquidity').style.color = askChange >= 0 ? '#26a69a' : '#ef5350';
+                document.getElementById('total-liquidity').style.color = totalChange >= 0 ? '#26a69a' : '#ef5350';
+                
+                // Update the input boxes and EST display with actual timestamp
+                document.getElementById('timestampInput').value = data.timestamp;
+                updateUTCInput();
+                
+                updateChart(data.bids, data.asks);
+                updateTable('bidsTable', data.bids.slice(0, 10));
+                updateTable('asksTable', data.asks.slice(0, 10));
+                
+                currentRow = data.current_row;
+            } catch (error) {
+                console.error('Error loading data:', error);
+                showError('Failed to load data. Please check if the data file exists.');
+            } finally {
+                hideLoading();
+            }
+        }
+        
+        function nextSnapshot() {
+            loadData(currentRow + 1);
+        }
+        
+        function previousSnapshot() {
+            if (currentRow > 0) {
+                loadData(currentRow - 1);
+            }
+        }
+        
+        async function jumpBackMinute() {
+            const currentTimestamp = parseInt(document.getElementById('timestampInput').value);
+            const oneMinuteInMicroseconds = 60 * 1000 * 1000; // 1 minute in microseconds
+            const newTimestamp = currentTimestamp - oneMinuteInMicroseconds;
+            
+            document.getElementById('timestampInput').value = newTimestamp;
+            await jumpToTimestamp();
+        }
+        
+        async function jumpForwardMinute() {
+            const currentTimestamp = parseInt(document.getElementById('timestampInput').value);
+            const oneMinuteInMicroseconds = 60 * 1000 * 1000; // 1 minute in microseconds
+            const newTimestamp = currentTimestamp + oneMinuteInMicroseconds;
+            
+            document.getElementById('timestampInput').value = newTimestamp;
+            await jumpToTimestamp();
+        }
+        
+        async function jumpToTimestamp() {
+            const input = document.getElementById('timestampInput');
+            const timestamp = parseInt(input.value);
+            if (isNaN(timestamp)) {
+                showError('Please enter a valid Unix timestamp');
+                return;
+            }
+            
+            showLoading();
+            hideError();
+            try {
+                const response = await fetch(`/api/find-timestamp?timestamp=${timestamp}&exchange=${currentExchange}`);
+                const data = await response.json();
+                
+                if (data.error) {
+                    showError(data.error);
+                    hideLoading();
+                    return;
+                }
+                
+                if (data.row !== undefined) {
+                    await loadData(data.row);
+                } else {
+                    showError('Could not find timestamp');
+                    hideLoading();
+                }
+            } catch (error) {
+                console.error('Error finding timestamp:', error);
+                showError('Error finding timestamp. Please check if the data file exists.');
+                hideLoading();
+            }
+        }
+        
+        function updateUTCInput() {
+            const timestampInput = document.getElementById('timestampInput');
+            const utcInput = document.getElementById('utcInput');
+            const estDisplay = document.getElementById('estDisplay');
+            const timestamp = parseInt(timestampInput.value);
+            
+            if (!isNaN(timestamp) && timestamp > 0) {
+                // Convert microseconds to milliseconds
+                const date = new Date(timestamp / 1000);
+                
+                // Format for datetime-local input (YYYY-MM-DDTHH:mm:ss) - 24-hour format
+                const year = date.getUTCFullYear();
+                const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+                const day = String(date.getUTCDate()).padStart(2, '0');
+                const hours = String(date.getUTCHours()).padStart(2, '0');
+                const minutes = String(date.getUTCMinutes()).padStart(2, '0');
+                const seconds = String(date.getUTCSeconds()).padStart(2, '0');
+                utcInput.value = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+                
+                // Display EST time in 24-hour format
+                const estTime = date.toLocaleString('en-GB', { 
+                    timeZone: 'America/New_York',
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: false
+                });
+                estDisplay.textContent = `EST: ${estTime}`;
+            } else {
+                estDisplay.textContent = 'EST: --';
+            }
+        }
+        
+        function updateTimestampInput() {
+            const timestampInput = document.getElementById('timestampInput');
+            const utcInput = document.getElementById('utcInput');
+            
+            if (utcInput.value) {
+                const date = new Date(utcInput.value + 'Z'); // Add Z for UTC
+                const timestamp = date.getTime() * 1000; // Convert to microseconds
+                timestampInput.value = timestamp;
+            }
+        }
+        
+        async function jumpToUTCTime() {
+            updateTimestampInput();
+            await jumpToTimestamp();
+        }
+        
+        // Allow Enter key to jump
+        document.addEventListener('DOMContentLoaded', function() {
+            const timestampInput = document.getElementById('timestampInput');
+            const utcInput = document.getElementById('utcInput');
+            
+            timestampInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    jumpToTimestamp();
+                }
+            });
+            
+            utcInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    jumpToUTCTime();
+                }
+            });
+            
+            // Update UTC input when timestamp changes
+            timestampInput.addEventListener('input', updateUTCInput);
+            
+            // Update timestamp when UTC input changes
+            utcInput.addEventListener('change', updateTimestampInput);
+        });
+        
+        // Initialize
+        initChart();
+        updateExchangeTabs();
+        
+        // Set default timestamp and jump to it
+        document.getElementById('timestampInput').value = '1760131211268000';
+        updateUTCInput();
+        jumpToTimestamp();
+    </script>
+</body>
+</html>
