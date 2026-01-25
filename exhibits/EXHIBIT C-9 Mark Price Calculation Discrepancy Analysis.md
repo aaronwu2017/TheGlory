@@ -2,7 +2,7 @@
 
 ## Overview
 
-Analysis of Binance's official Mark Price calculation formula reveals significant discrepancies when applied to publicly available order book data, suggesting potential manipulation or incorrect implementation during the October 10, 2025 incident.
+Analysis of Binance's official Mark Price calculation formula reveals significant discrepancies when applied to publicly available order book data, suggesting potential manipulation or incorrect implementation during the October 10, 2025 incident. The earliest observed inverted order book (bid > ask) in BTCUSDT public depth data occurs at **2025-10-10 15:30:42 UTC** (from BTCUSDT-bookDepth-2025-10-10.csv; first instance where `bids[-1] > asks[1]`).
 
 ---
 
@@ -124,6 +124,7 @@ This represents an **inverted order book** - a clear system malfunction that sho
 The discrepancy between:
 - **Expected Mark Price** (calculated using official formula + public order book data)
 - **Actual Mark Price** (used for liquidations and ADL)
+
 
 
 
