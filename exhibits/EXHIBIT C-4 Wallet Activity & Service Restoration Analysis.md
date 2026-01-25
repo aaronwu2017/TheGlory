@@ -87,12 +87,6 @@ The halt in Binance's cryptocurrency withdrawal services was **not** due to bloc
 ## Institutional Market Maker Context
 
 
-
-
-
-
-## 5. Institutional Market Maker Context
-
 **Wintermute** is recognized as a dominant global market maker and, based on information and belief, is responsible for maintaining liquidity for digital assets including SUI, ATOM, and BTC on the Respondent's platform.
 
 ### Evidence of Infrastructure Failure Preventing Liquidity Provision
