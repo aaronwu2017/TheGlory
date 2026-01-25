@@ -51,7 +51,13 @@ def compare_all_coins():
     script_dir = os.path.dirname(os.path.abspath(__file__))
     spot_dir = script_dir
 
-    coins = ["BTC", "DOGE", "AAVE", "SOL", "POL"]
+    # Original coins + liquidated coins from 2025-10-10 incident
+    coins = ["BTC", "DOGE", "AAVE", "SOL", "POL", 
+             "CRV", "WIF", "PEPE", "SKY", "ENA", "BB", "BONK", "WLD"]
+    
+    # For PEPE and BONK: spot markets use same units (no multiplier needed)
+    # Only futures use 1000PEPE/1000BONK
+    multiplier_coins = {}
 
     print("Binance baseline vs Coinbase / Gemini (2025-10-10)\n")
 
@@ -81,12 +87,20 @@ def compare_all_coins():
         print(f"{coin}:")
         print(f"  Binance min {fmt.format(binance_min)} ({binance_rec:,} records)")
 
+        # Get multiplier for coins like PEPE/BONK
+        multiplier = multiplier_coins.get(coin, 1)
+
         for ex in ["coinbase", "gemini"]:
             if ex in results:
                 ex_min = results[ex]["min"]
-                diff = ex_min - binance_min
+                # Apply multiplier for comparison (Coinbase PEPE -> Binance 1000PEPE)
+                adjusted_min = ex_min * multiplier
+                diff = adjusted_min - binance_min
                 pct = (diff / binance_min) * 100 if binance_min else 0
-                print(f"  {ex.capitalize()} min {fmt.format(ex_min)} | vs Binance {pct:+.4f}%")
+                if multiplier > 1:
+                    print(f"  {ex.capitalize()} min {fmt.format(ex_min)} (x{multiplier}={fmt.format(adjusted_min)}) | vs Binance {pct:+.4f}%")
+                else:
+                    print(f"  {ex.capitalize()} min {fmt.format(ex_min)} | vs Binance {pct:+.4f}%")
 
         print("")
 
