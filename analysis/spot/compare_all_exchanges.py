@@ -53,7 +53,7 @@ def compare_all_coins():
 
     # Original coins + liquidated coins from 2025-10-10 incident
     coins = ["BTC", "DOGE", "AAVE", "SOL", "POL", 
-             "CRV", "WIF", "PEPE", "SKY", "ENA", "BB", "BONK", "WLD"]
+             "CRV", "WIF", "PEPE", "SKY", "ENA", "BONK", "WLD"]
     
     # For PEPE and BONK: spot markets use same units (no multiplier needed)
     # Only futures use 1000PEPE/1000BONK
