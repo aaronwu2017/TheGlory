@@ -14,20 +14,20 @@ This dual-faced approach—**public admission of fault** combined with **private
 
 ---
 
-## 2. PART I: PUBLIC ADMISSION OF SYSTEM FAILURE
+## 2. PART I: VAGUE PUBLIC ADMISSION WITHOUT SPECIFICS
 
-On October 10, 2025, immediately following the outage, Binance released an official announcement acknowledging the failure.
+On October 10, 2025, immediately following the outage, Binance released an official announcement acknowledging the failure. However, this admission was **superficial and lacked any specific technical details**.
 
 *   **Date of Admission**: 2025-10-10
 *   **Time Identified**: Following 21:18 UTC
-*   **Key Admission**: "Some platform modules **briefly experienced technical glitches**" and assets "encountered **de-pegging issues**."
+*   **Nature of Admission**: A generic statement citing "technical glitches" and "de-pegging," without explaining the root cause, scope, or specific modules affected.
 
 > **Official Statement Text**:
 > *"We would like to inform you that following 2025-10-10 21:18 (UTC), some platform modules briefly experienced technical glitches... certain assets encountered de-pegging issues due to sharp market fluctuations."*
 >
 > **Source Link**: [Binance Announcement (Archived)](https://www.binance.com/en/support/announcement/notice-regarding-technical-glitches-on-binance-platform-2025-10-10)
 
-This establishes indisputably that the Respondent **was aware** of the system failure that directly caused the "Liquidity Anomaly."
+While this confirms the Respondent **was aware** of the system failure, they have strategically avoided disclosing **what actually happened**, treating the incident as a minor "glitch" rather than a catastrophic failure of their core matching and risk engines.
 
 ---
 
