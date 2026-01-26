@@ -1,4 +1,4 @@
-# Binance System Outage Claim Calculation Report
+# Claim Calculation Report
 
 ## Event Overview
 
@@ -49,7 +49,7 @@
 | Component | Amount (USDT) | Description |
 |-----------|---------------|-------------|
 | Entry->Mark (Unrealized@16:40) | -13,806.70 | Floating loss existing before outage |
-| Mark->Liq (Loss DURING Outage) | -17,461.75 | **Losses caused by inability to operate** |
+| Mark->Liq (Loss DURING Outage) | -17,461.75 | **Losses caused by Liquidity Anomaly** |
 | Entry->Liq (Total Realized Loss) | -31,268.45 | Total realized loss |
 
 ---
@@ -172,11 +172,11 @@ Actual Final Balance:           0.00
 
 ---
 
-## Part 6: HKIAC Arbitration Claim Calculation
+## Part 6: Claim Calculation Summary
 
 ### Claim Methodology
 
-Your claim is for the **total value lost due to the Binance system outage** on October 10, 2025. There are two equivalent methods to calculate this amount:
+Your claim is for the **total value lost due to the Binance system outage and Liquidity Anomaly** on October 10, 2025. There are two equivalent methods to calculate this amount:
 
 - **Method 1**: Account Value + Capital Injected = Account Equity@16:40 + Net Transfer
 - **Method 2**: Sum of Losses = Mark->Liq Loss + New Position Loss + Fees
