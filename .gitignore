@@ -5,6 +5,9 @@
 !/analysis
 !/exhibits
 
+# Unignore loss calculation
+!/loss calculation/blah
+
 # 3. Unignore the .gitignore file itself so it is tracked
 !/.gitignore
 
