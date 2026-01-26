@@ -53,8 +53,11 @@ The Claimant observed a consistent pattern of **unresponsiveness**:
 ### 3.3 Implication of Withholding
 The refusal to provide data—especially when the Claimant ultimately retrieved partial data (Exhibits C-2, C-4) through other means—suggests the Respondent intentionally withheld information that would confirm the severity of the system failure was greater than the "brief glitch" publicly admitted.
 
-### 3.4 Specific Technical Data Requests (Ignored by Respondent)
-In addition to general support requests, the Claimant explicitly requested the following detailed technical data (e.g., in response to @moonkimbinance's post), which the Respondent has consistently refused to provide. These requests are critical for a forensic analysis of the "Liquidity Anomaly":
+### 3.4 Community-Led Technical Demands & Binance's Evasion (October 27, 2025)
+
+On **October 27, 2025**, a comprehensive list of technical demands regarding the outage was published publicly, garnering significant attention (**over 430,000 views**). A Binance representative (e.g., **@moonkimbinance**) publicly replied to this thread, acknowledging the inquiry.
+
+Despite this high-profile engagement and the representative's presence, Binance **failed to provide** any of the specific forensic data requested. The Claimant adopts these community-verified technical questions as critical evidence requirements which the Respondent has refused to fulfill:
 
 1.  **Feed / Mark Price / Price Bands**
     *   Mark Price (per second resolution) + Algorithm Version used at the time.
@@ -77,7 +80,7 @@ In addition to general support requests, the Claimant explicitly requested the f
     *   Event Window ±1 hour: "Freeze/Approval Records" & Version Hashes for Parameters/Code/Rate Limit Thresholds.
     *   Platform Overall Health: p50/p95 Latency, Error Rate, Availability per second; Call Auction/Halt Trigger Records.
 
-**Result**: Binance has provided **none** of this requested data.
+**Result**: Even after public pressure and direct engagement from their representative, Binance has provided **none** of this requested data to the public or the Claimant.
 
 ---
 
