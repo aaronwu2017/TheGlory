@@ -45,7 +45,11 @@ The Claimant and the wider community have sought explanations for:
 
 ### 3.2 Public Evidence Request (October 27, 2025)
 
-On October 27, 2025, the Claimant publicly requested specific technical data from Binance (the post received over 430,000 views). A Binance representative (@moonkimbinance) replied to this thread, acknowledging the inquiry. However, Binance failed to provide any of the following:
+On October 27, 2025, the Claimant publicly requested specific technical data from Binance (the post received over 430,000 views). A Binance representative (@moonkimbinance) replied to this thread, acknowledging the inquiry:
+
+![Binance Representative @moonkimbinance Reply](assets/Screenshot%202026-01-25%20232259.png)
+
+However, Binance failed to provide any of the following:
 
 **1) Mark Price / Index Price / Price Bands**
    - Mark Price (per-second) + Algorithm Version
