@@ -80,9 +80,9 @@ Result: Despite public acknowledgment from their representative, Binance has pro
 
 The Claimant's position is based on two key issues:
 
-1.  No Explanation of What Happened: Binance has never explained what specifically occurred during the incident—neither the root cause, nor which modules failed, nor the mechanism behind the "severe de-pegging".
+1.  **No Explanation of What Happened**: Binance has never explained what specifically occurred during the incident—neither the root cause, nor which modules failed, nor the mechanism behind the "severe de-pegging".
 
-2.  System Anomalies Occurred Before 21:18 UTC: The Claimant has evidence that many system anomalies were already occurring before Binance's claimed start time of 21:18 UTC. Binance has not addressed or acknowledged these earlier issues.
+2.  **System Anomalies Occurred Before 21:18 UTC**: The Claimant has evidence that many system anomalies were already occurring before Binance's claimed start time of 21:18 UTC. Binance has not addressed or acknowledged these earlier issues.
 
 The Respondent's refusal to provide transparency on these points demonstrates a lack of good faith.
 
