@@ -1,14 +1,10 @@
 # EXHIBIT C-13: BINANCE'S QUESTIONABLE TIMESTAMP CLAIM WITH NO CLEAR EXPLANATION
 
-**EVIDENCE REFERENCE**: **C-13**
-**SUBJECT**: **Binance Claims Malfunction Started at 21:18 UTC, But Evidence Suggests System Issues Began Much Earlier**
-**DATE**: **October 2025 - Present**
-
 ---
 
 ## 1. EXECUTIVE SUMMARY
 
-This exhibit documents the Respondent's (Binance) questionable timestamp claim regarding when the system malfunction began. Binance publicly stated the issues started "following 21:18 UTC", but the Claimant has evidence suggesting system problems began significantly earlier—around 16:40-17:00 UTC.
+This exhibit documents the Respondent's (Binance) questionable timestamp claim regarding when the system malfunction began. Binance publicly stated the issues started "following 21:18 UTC", but the Claimant has evidence suggesting system problems began significantly earlier.
 
 ---
 
