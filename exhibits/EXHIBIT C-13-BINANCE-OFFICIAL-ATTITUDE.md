@@ -76,13 +76,29 @@ Result: Despite public acknowledgment from their representative, Binance has pro
 
 ---
 
-## 4. CONCLUSION
+## 4. TAMPERING WITH K-LINE DATA
 
-The Claimant's position is based on two key issues:
+Beyond poor communication and lack of transparency, Binance has also tampered with historical K-line data to obscure the true extent of the incident.
+
+![K-Line Tampering Evidence: Before and After](assets/G3NRzc0bUAAcwpy.jpg)
+
+**Evidence**: The screenshot above shows ATOM/USDT K-line data before and after modification:
+- **Before modification**: Lowest price shown as **0.001** USDT
+- **After modification**: Lowest price changed to **1.540** USDT
+
+This manipulation of historical trading data is a deliberate attempt to erase evidence of the extreme price anomalies that occurred during the incident.
+
+---
+
+## 5. CONCLUSION
+
+The Claimant's position is based on three key issues:
 
 1.  **No Explanation of What Happened**: Binance has never explained what specifically occurred during the incident—neither the root cause, nor which modules failed, nor the mechanism behind the "severe de-pegging".
 
 2.  **System Anomalies Occurred Before 21:18 UTC**: The Claimant has evidence that many system anomalies were already occurring before Binance's claimed start time of 21:18 UTC. Binance has not addressed or acknowledged these earlier issues.
+
+3.  **Tampering with Historical Data**: Binance has modified K-line data post-incident to conceal the true extent of price anomalies.
 
 The Respondent's refusal to provide transparency on these points demonstrates a lack of good faith.
 
