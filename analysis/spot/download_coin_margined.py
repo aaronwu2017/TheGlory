@@ -36,8 +36,18 @@ COIN_M_SYMBOLS = [
     "AVAXUSD_PERP",   # Avalanche
     "TRXUSD_PERP",    # Tron
     "XLMUSD_PERP",    # Stellar
-    "ETCUSD_PERP",    # Ethereum Classic
-    "EOSUDSD_PERP",   # EOS
+    "EOSUSD_PERP",    # EOS
+    "AAVEUSD_PERP",   # Aave
+    "MATICUSD_PERP",  # Polygon (Old)
+    "POLUSD_PERP",    # Polygon (New)
+    "MKRUSD_PERP",    # Maker (Old)
+    "SKYUSD_PERP",    # Sky (New)
+    "PEPEUSD_PERP",   # Pepe
+    "BONKUSD_PERP",   # Bonk
+    "ENAUSD_PERP",    # Ethena
+    "CRVUSD_PERP",    # Curve
+    "WLDUSD_PERP",    # Worldcoin
+    "WIFUSD_PERP",    # dogwifhat
 ]
 
 # Target coins from C-7 + ATOM
@@ -108,7 +118,14 @@ def analyze_min_prices(download_dir=None):
                     max_price = df['price'].max()
                     
                     # Extract symbol from filename
-                    symbol = file.split('_trades_')[0].replace('binance-delivery_', '') if '_trades_' in file else file
+                    # Format: binance-delivery_trades_2025-10-10_SYMBOL.csv.gz
+                    # OR: binance-delivery_trades_2025-10-10_SYMBOL.csv
+                    # We can remove the prefix and suffix
+                    symbol = file
+                    for prefix in ["binance-delivery_trades_2025-10-10_", "binance-delivery_trades_"]:
+                        symbol = symbol.replace(prefix, "")
+                    
+                    symbol = symbol.replace(".csv.gz", "").replace(".csv", "")
                     
                     results[symbol] = {
                         'min': min_price,
